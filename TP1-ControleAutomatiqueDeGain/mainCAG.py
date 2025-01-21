@@ -96,3 +96,17 @@ plt.subplot(212)
 plt.hist(uniforme_norm, bins=n_bins)
 plt.title("Histogramme Uniforme Normalisé")
 plt.show()
+
+### utilisation du CAG ###
+from FunctionsCAG import CAG
+
+sigma = 10
+mu = 0.005
+h_test = CAG(binaire_norm, mu, sigma)
+
+h_tild = np.full(n, sigma)
+
+plt.plot(time, h_tild, "r", label="Valeur théorique")
+plt.plot(time, h_test, "b", label="Valeur estimé")
+plt.legend()
+plt.show()
