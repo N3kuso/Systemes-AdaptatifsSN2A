@@ -5,6 +5,7 @@ Fichiers de Functions pour le TP1 CAG
 @author: kooky
 """
 import numpy as np
+import matplotlib.pyplot as plt
 
 def Normalize(X):
     # (Signal - moy) / std
@@ -39,4 +40,13 @@ def CAG(signal, mu, sigma2):
     
     return H,Y
         
-    
+def PlotSignal(t, s1, s2):
+    plt.subplot(211)
+    # Affichage Signal d'entrée
+    plt.plot(t, s1)
+    plt.title("Signal d'entrée")
+    plt.subplot(212)
+    # Affichage signal de sortie
+    plt.plot(t, s2)
+    plt.title("Signal de sortie")
+    plt.show()
