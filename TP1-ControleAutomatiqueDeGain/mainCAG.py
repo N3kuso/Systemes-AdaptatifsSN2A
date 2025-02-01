@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 from FunctionsCAG import Normalize
+from FunctionsCAG import PlotSignal
 ########################################################
 # P1 :
 ########################################################
@@ -184,6 +185,8 @@ plt.legend()
 plt.title("Evolution du coef h2 pour un signal binaire non stationnaire")
 plt.show()
 
+PlotSignal(time, binaire_not_stationnary, y_experimental)
+
 ## Signal gaussien ##
 # Création d'un signal gaussien non stationnaire
 gaussien_not_stationnary = gaussien_norm
@@ -204,6 +207,8 @@ plt.legend()
 plt.title("Evolution du coef h2 pour un signal gaussien non stationnaire")
 plt.show()
 
+PlotSignal(time, gaussien_not_stationnary, y_experimental)
+
 ## Signal uniforme ##
 # Création d'un signal uniforme non stationnaire
 uniforme_not_stationnary = uniforme_norm
@@ -223,3 +228,5 @@ plt.plot(time, h2_experimental, '-', linewidth=1)
 plt.legend()
 plt.title("Evolution du coef h2 pour un signal uniforme non stationnaire")
 plt.show()
+
+PlotSignal(time, uniforme_not_stationnary, y_experimental)
