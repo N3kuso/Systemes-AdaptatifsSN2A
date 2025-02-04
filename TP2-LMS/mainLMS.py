@@ -19,25 +19,34 @@ f = 1000 # Fréquence du signal
 valid_choice = False
 
 while not valid_choice:
-    choice_signal = int(input("Choix du signal : 1 (Binaire) - 2 (Gaussien) - 3 (Sinusoïdal)"))
+    choice_signal = input("Choix du signal : 1 (Binaire) - 2 (Gaussien) - 3 (Sinusoïdal)")
 
-    if choice_signal == 1:
+    if choice_signal == "1":
         ## Génération du signal Binaire ##
         input_signal = FunctionLMS.BinarySignal(n)
         # Affichage
         FunctionLMS.PlotSignal(time, input_signal, title="Signal Binaire")
         valid_choice = True
-    elif choice_signal == 2:
+    elif choice_signal == "2":
         ## Génération du signal Gaussien
         input_signal = FunctionLMS.GaussianSignal(n)
         # Affichage
         FunctionLMS.PlotSignal(time, input_signal, title="Signal Gaussien") 
-    elif choice_signal == 3:
+        valid_choice = True
+    elif choice_signal == "3":
         ## Génération du signal Sinusoidal ##
-        sinusoidal_signal = FunctionLMS.SinusoidalSignal(f, n, time)
+        input_signal = FunctionLMS.SinusoidalSignal(f, n, time)
         # Affichage
-        FunctionLMS.PlotSignal(time, sinusoidal_signal, title="Signal Sinusoïdal")
+        FunctionLMS.PlotSignal(time, input_signal, title="Signal Sinusoïdal")
+        valid_choice = True
+    else:
+        print("Choix invalide. Veuillez entrer 1, 2 ou 3.")
 
 ## Simulation du filtre inconnu ##
-h_unknown = [1, 0.75, 0.5]
+h_unknown_coeff = [1, 0.75, 0.5]
 
+y_tild = np.convolve(input_signal, h_unknown_coeff)
+print(y_tild)
+print(len(y_tild))
+
+plt.show()
