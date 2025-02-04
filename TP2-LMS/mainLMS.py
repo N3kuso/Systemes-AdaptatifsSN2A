@@ -30,3 +30,6 @@ FunctionLMS.PlotSignal(time, gaussian_signal)
 sinusoidal_signal = FunctionLMS.SinusoidalSignal(f, n, time)
 # Affichage
 FunctionLMS.PlotSignal(time, sinusoidal_signal)
+
+## Simulation du filtre inconnu ##
+h_unknown = [1, 0.75, 0.5]
