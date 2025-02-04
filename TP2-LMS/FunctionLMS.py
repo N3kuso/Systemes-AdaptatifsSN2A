@@ -28,11 +28,13 @@ def Lms(x, a, mu, N):
     Y = np.zeros(M) # Initialisation du vecteur signal de sortie
     
     for n in range(N, M):
-        xx = x[n-M] # Vecteur contenant les N dernieres valeurs de x
-        y = h.T * xx # Estimation du y
-        h = h + mu * (a[n] - h.T * xx) * xx # Correction des coefficients
-        Hm[:, n+N] = h # Ajout du coefficient à la matrice historique
-        Y[n + M] = y # Ajout de y au vecteur Y
+        xx = x[n-N:n] # Vecteur contenant les N dernieres valeurs de x
+
+        y = h.T @ xx # Estimation du y (Produit scalaire)
+        h = h + mu * (a[n] - y) * xx # Correction des coefficients
+
+        Hm[:, n] = h # Ajout du coefficient à la matrice historique
+        Y[n] = y # Ajout de y au vecteur Y
     
     return Hm, Y
 
@@ -112,4 +114,4 @@ def PlotSignal(t, s1, title="Signal", xlabel="Temps", ylabel="Amplitude"):
     plt.ylabel(ylabel)
     plt.legend()
     plt.grid()
-    plt.show()
+    #plt.show()
