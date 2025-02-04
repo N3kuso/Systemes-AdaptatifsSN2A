@@ -34,6 +34,20 @@ def Lms(x, a, mu, N):
     
     return Hm, Y
 
+def Normalize(x):
+    """
+    Fonction qui normalise un signal x
+
+    Input :
+        x -> Vecteur signal d'entrée
+    Output :
+        y -> Vecteur signal sortie
+    """
+    # Normalisation du signal : (Signal - moy) / std
+    y = (x - np.mean(x)) / np.std(x)
+    return y
+    
+
 def BinarySignal(n):
     """
     Fonction qui génère un signal binaire
@@ -45,4 +59,5 @@ def BinarySignal(n):
     """
     y = np.random.choice((-1,1), n)
     return y
-    
+
+
