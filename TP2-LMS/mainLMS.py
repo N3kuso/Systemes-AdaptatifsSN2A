@@ -19,14 +19,14 @@ f = 1000 # Fréquence du signal
 ## Génération du signal Binaire ##
 binary_signal = FunctionLMS.BinarySignal(n)
 # Affichage
-FunctionLMS.PlotSignal(time, binary_signal)
+FunctionLMS.PlotSignal(time, binary_signal, title="Signal Binaire")
 
 ## Génération du signal Gaussien
 gaussian_signal = FunctionLMS.GaussianSignal(n)
 # Affichage
-FunctionLMS.PlotSignal(time, gaussian_signal)
+FunctionLMS.PlotSignal(time, gaussian_signal, title="Signal Gaussien")
 
 ## Génération du signal Sinusoidale ##
 sinusoidal_signal = FunctionLMS.SinusoidalSignal(f, n, time)
 # Affichage
-FunctionLMS.PlotSignal(time, sinusoidal_signal)
+FunctionLMS.PlotSignal(time, sinusoidal_signal, title="Signal Sinusoîdal")
