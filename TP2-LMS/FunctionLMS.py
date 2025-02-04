@@ -74,18 +74,19 @@ def GaussianSignal(n):
 
     return y
 
-def SinusoidalSignal(f, n):
+def SinusoidalSignal(f, n, t):
     """
     Fonction qui génère un signal sinusoidale à phase aléatoire
 
     Input :
         f -> Fréquence du signal
         n -> Taille du signal
+        t -> Vecteur temps
     Output :
         y -> Vecteur signal sinusoidale
     """
-    phi = np.random.uniform(0, 2* np.pi) # Génération d'une phase aléatoire
+    phi = np.random.uniform(0, 2* np.pi, n) # Génération d'un vecteur de phase aléatoire
 
-    y = np.sin(2 * np.pi * f * n + phi) # Génération du signal sinusoidal
+    y = np.sin(2 * np.pi * f * t + phi) # Génération du signal sinusoidal
 
     return y
