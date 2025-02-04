@@ -72,4 +72,8 @@ FunctionLMS.PlotSignal(time, estimated_coef[0,:], title="h0")
 FunctionLMS.PlotSignal(time, estimated_coef[1,:], title="h1")
 FunctionLMS.PlotSignal(time, estimated_coef[2,:], title="h2")
 
+for test_mu in [0.01, 0.005, 0.001, 0.0005]:
+    estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
+    print(f"Test avec mu={test_mu}, derniers coefficients:", estimated_coef[:, -1])
+    
 plt.show()
