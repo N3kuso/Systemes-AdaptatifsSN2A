@@ -33,4 +33,16 @@ def Lms(x, a, mu, N):
         Y[n + M] = y # Ajout de y au vecteur Y
     
     return Hm, Y
+
+def BinarySignal(n):
+    """
+    Fonction qui génère un signal binaire
+
+    Input :
+        n -> Taille du signal
+    Output :
+        y -> Vecteur signal binaire
+    """
+    y = np.random.choice((-1,1), n)
+    return y
     
