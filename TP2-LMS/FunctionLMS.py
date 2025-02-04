@@ -57,7 +57,19 @@ def BinarySignal(n):
     Output :
         y -> Vecteur signal binaire
     """
-    y = np.random.choice((-1,1), n)
+    y = np.random.choice((-1,1), n) # Génération du signal binaire
+    
     return y
 
+def GaussianSignal(n):
+    """
+    Fonction qui génère un signal gaussien de moyenne 0 et std 0.1
 
+    Input :
+        n -> Taille du signal
+    Output :
+        y -> Vecteur signal binaire
+    """
+    y = np.random.normal(0, 0.1, n) # Génération du signal Gaussien
+
+    return y
