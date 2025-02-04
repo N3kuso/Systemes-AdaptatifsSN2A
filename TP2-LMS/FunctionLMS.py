@@ -30,7 +30,7 @@ def Lms(x, a, mu, N):
     for n in range(N, M):
         xx = x[n-N:n] # Vecteur contenant les N dernieres valeurs de x
 
-        y = h.T @ xx # Estimation du y (Produit scalaire)
+        y = np.dot(h.T,xx) # Estimation du y (Produit scalaire)
         h = h + mu * (a[n] - y) * xx # Correction des coefficients
 
         Hm[:, n] = h # Ajout du coefficient à la matrice historique
