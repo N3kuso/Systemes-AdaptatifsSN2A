@@ -5,6 +5,8 @@ Syst. Adapt. : Librairies de fonctions pour le script LMS
 @author: kooky
 """
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 def Lms(x, a, mu, N):
     """
@@ -90,3 +92,24 @@ def SinusoidalSignal(f, n, t):
     y = np.sin(2 * np.pi * f * t + phi) # Génération du signal sinusoidal
 
     return y
+
+def PlotSignal(t, s1, title="Signal", xlabel="Temps", ylabel="Amplitude"):
+    """
+    Fonction qui affiche un signal à l'aide de Matplotlib
+    
+    Input : 
+        t -> Vecteur temps
+        s1 -> Vecteur signal
+        title  : Titre du graphique
+        xlabel -> Label de l'axe des abscisses
+        ylabel -> Label de l'axe des ordonnées
+    """
+
+    plt.figure(figsize=(10, 4))
+    plt.plot(t, s1, label=title)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend()
+    plt.grid()
+    plt.show()
