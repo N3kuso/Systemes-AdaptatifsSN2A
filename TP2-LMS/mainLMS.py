@@ -12,7 +12,7 @@ import FunctionLMS
 # Simulation Numériques
 ########################################################
 # Initialisation de valeur pour la génération des signaux
-n = 1600 # Taille du signal
+n = 16384 # Taille du signal
 time = np.arange(0,n) # Génèration d'un vecteur temps
 f = 1000 # Fréquence du signal
 
@@ -45,8 +45,31 @@ while not valid_choice:
 ## Simulation du filtre inconnu ##
 h_unknown_coeff = [1, 0.75, 0.5]
 
-y_tild = np.convolve(input_signal, h_unknown_coeff)
+########################################################
+# Si1 : Contexte non-bruité
+########################################################
+# Génération du signal de sortie avec le filtre RIF
+y_tild = np.convolve(input_signal, h_unknown_coeff, mode='same')
 print(y_tild)
 print(len(y_tild))
+
+# Génération du signal d'observation
+noise_e = 0 # Contexte non-bruité donc bruit e[n] = 0
+a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
+print(a)
+
+# Identification du filtre RIF grâce au LMS
+mu = 0.01 # Pas d'adaptation du filtre
+N = 3 # Nombre coefficient du filtre
+estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
+
+print(estimated_coef.shape)
+
+FunctionLMS.PlotSignal(time, a[:n], title="a[n]")
+FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
+
+FunctionLMS.PlotSignal(time, estimated_coef[0,:], title="h0")
+FunctionLMS.PlotSignal(time, estimated_coef[1,:], title="h1")
+FunctionLMS.PlotSignal(time, estimated_coef[2,:], title="h2")
 
 plt.show()
