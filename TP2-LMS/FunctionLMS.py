@@ -58,7 +58,7 @@ def BinarySignal(n):
         y -> Vecteur signal binaire
     """
     y = np.random.choice((-1,1), n) # Génération du signal binaire
-    
+
     return y
 
 def GaussianSignal(n):
@@ -68,8 +68,24 @@ def GaussianSignal(n):
     Input :
         n -> Taille du signal
     Output :
-        y -> Vecteur signal binaire
+        y -> Vecteur signal gaussien
     """
     y = np.random.normal(0, 0.1, n) # Génération du signal Gaussien
+
+    return y
+
+def SinusoidalSignal(f, n):
+    """
+    Fonction qui génère un signal sinusoidale à phase aléatoire
+
+    Input :
+        f -> Fréquence du signal
+        n -> Taille du signal
+    Output :
+        y -> Vecteur signal sinusoidale
+    """
+    phi = np.random.uniform(0, 2* np.pi) # Génération d'une phase aléatoire
+
+    y = np.sin(2 * np.pi * f * n + phi) # Génération du signal sinusoidal
 
     return y
