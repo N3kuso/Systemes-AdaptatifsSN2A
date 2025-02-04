@@ -9,7 +9,11 @@ import matplotlib.pyplot as plt
 
 def Normalize(X):
     # (Signal - moy) / std
-    return (X - np.mean(X))/np.std(X)
+    X_norm = (X - np.mean(X))/np.std(X)
+    print(f"Moyenne après normalisation : {np.mean(X_norm)}")
+    print(f"Écart-type après normalisation : {np.std(X_norm)}")
+    print(f"Puissance après normalisation : {np.mean(np.power(X_norm,2)):.5f}")
+    return X_norm
 
 def CAG(signal, mu, sigma2):
     """
@@ -50,3 +54,22 @@ def PlotSignal(t, s1, s2):
     plt.plot(t, s2)
     plt.title("Signal de sortie")
     plt.show()
+    
+def Evolutionh2withmu(t, s1, mu, sigma2, title):
+    n = len(t)
+    # Valeur théorique de h2
+    h2_theorical = np.full(n, sigma2)
+    
+    plt.plot(t, h2_theorical, "r", label="h2 théorique")
+    
+    h2_experimental, y_experimental = CAG(s1, mu, sigma2)
+    plt.plot(t, h2_experimental, '-', linewidth=1, label="h2 pratique")
+    plt.legend()
+    plt.title(title)
+    plt.show()
+    print(f"{s1}")
+    print(f" Moyenne h2 pratique {np.mean(h2_experimental[8192:])}")
+    erreur = round(np.mean(np.abs(h2_experimental[8192:] - h2_theorical[8192:])),5) * 100
+    print(f" Erreur {erreur} %")
+    erreur_quadratique = np.mean(np.power(h2_experimental[8192:] - h2_theorical[8192:],2))
+    print(f"Erreur quadratique : {erreur_quadratique}")
