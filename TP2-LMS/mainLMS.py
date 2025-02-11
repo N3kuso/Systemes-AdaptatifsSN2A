@@ -56,13 +56,14 @@ noise_e = 0 # Contexte non-bruité donc bruit e[n] = 0
 a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
 
 # Identification du filtre RIF grâce au LMS
-mu = 0.1 # Pas d'adaptation du filtre
+mu = 0.001 # Pas d'adaptation du filtre
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
-# Affichage du signal d'entrée
+# Affichage du signal d'observation
 FunctionLMS.PlotSignal(time, a, title="a[n]")
-# Affichage du signal d'entrée filtrée par le filtre RIF
+
+# Affichage du signal y estimé par le LMS
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
 # Affichage de l'évolution des coefficients
@@ -115,5 +116,37 @@ for coef_test in range_coef_test:
     # Affichage de l'évolution des coefficients h0 et h1
     FunctionLMS.PlotCoefficientsEvolution(estimated_coef[:2, :], h_unknown_coeff[:2], 
                                           title=f"Évolution des coefficients $h_0$ et $h_1$ du LMS, mu : {mu}, ordre {N}, $h_0$[0] : {coef_test[0]}, $h_1$ : {coef_test[1]}")
+
+
+
+########################################################
+# Si3 : Contexte bruité
+########################################################
+# Génération du signal d'observation avec du bruit
+# Puissance du signal de sortie du RIF
+Px = np.mean(np.power(y_tild,2))
+# RSB à obtenir 
+RSB = 20
+# Calcul de la puissance du bruit à ajouter
+Pe = Px/(np.power(10, RSB/10)) # Equivalent à la variance
+print(f"Pe : {Pe}")
+noise_std = np.sqrt(Pe) # Ecart-type du bruit -> sqrt(variance)
+
+noise_e = np.random.normal(0, noise_std, len(y_tild)) # Génération d'un bruit Gaussien de la taille de y_tild
+a = y_tild + noise_e # Construction du signal d'observation : y_tild + noise_e
+
+# Identification du filtre RIF grâce au LMS
+mu = 0.01 # Pas d'adaptation du filtre
+N = 3 # Nombre coefficient du filtre
+estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
+
+# Affichage du signal d'observation bruité
+FunctionLMS.PlotSignal(time, a, title="a[n] bruité")
+
+# Affichage du signal y estimé par le LMS
+FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
+
+# Affichage de l'évolution des coefficients
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Contexte bruité - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
 plt.show()
