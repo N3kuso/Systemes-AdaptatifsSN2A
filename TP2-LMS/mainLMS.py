@@ -50,28 +50,45 @@ h_unknown_coeff = [1, 0.75, 0.5]
 ########################################################
 # Génération du signal de sortie avec le filtre RIF
 y_tild = np.convolve(input_signal, h_unknown_coeff, mode='same')
-# print(y_tild)
-# print(len(y_tild))
 
 # Génération du signal d'observation
 noise_e = 0 # Contexte non-bruité donc bruit e[n] = 0
 a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
-# print(a)
 
 # Identification du filtre RIF grâce au LMS
 mu = 0.001 # Pas d'adaptation du filtre
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
-# print(estimated_coef.shape)
-
+# Affichage du signal d'entrée
 FunctionLMS.PlotSignal(time, a, title="a[n]")
+# Affichage du signal d'entrée filtrée par le filtre RIF
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
-FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff)
+# Affichage de l'évolution des coefficients
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
-# for test_mu in [0.01, 0.005, 0.001, 0.0005]:
-#     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
-#     print(f"Test avec mu={test_mu}, derniers coefficients:", estimated_coef[:, -1])
+### Surestimation du nombre de coefficients de la fonction LMS ###
+h_unknown_coeff = [1, 0.75, 0.5, 0, 0] # Ajout de 0 fictif pour compatibilité avec la fonction PlotCoefficientsEvolution
+## Ordre 4
+N = 4
+estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
+print(estimated_coef.shape)
+# Affichage de l'évolution des coefficients
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+
+## Ordre 5
+N = 5
+estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
+# Affichage de l'évolution des coefficients
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+
+### Visualisation avec différentes valeurs de pas d'adaptation
+N = 3 # Ordre parfait du filtre RIF
+h_unknown_coeff = [1, 0.75, 0.5] # Retour au bon nombre de coeff pour le RIF
+for test_mu in [0.01, 0.005, 0.001, 0.0005]:
+    estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
+    # Affichage de l'évolution des coefficients
+    FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {test_mu}, ordre {N}")
     
 plt.show()
