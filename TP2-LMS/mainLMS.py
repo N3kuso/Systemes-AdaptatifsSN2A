@@ -56,7 +56,7 @@ noise_e = 0 # Contexte non-bruité donc bruit e[n] = 0
 a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
 
 # Identification du filtre RIF grâce au LMS
-mu = 0.001 # Pas d'adaptation du filtre
+mu = 0.1 # Pas d'adaptation du filtre
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
@@ -90,5 +90,30 @@ for test_mu in [0.01, 0.005, 0.001, 0.0005]:
     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
     # Affichage de l'évolution des coefficients
     FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {test_mu}, ordre {N}")
+
+########################################################
+# Si2 : Visualisation de la convergence du LMS avec 
+#       des valeurs initiales pour h0 et h1
+########################################################
+# Plage de coefficients test
+range_coef_test = np.array([
+    [2, 1, 0],
+    [10, 5, 0],
+    [-5, 3, 0],
+    [1, -10, 0]
+])
+
+# Paramètres du LMS
+mu = 0.001 # Pas d'adaptation du filtre
+N = 3 # Nombre coefficient du filtre
+
+# Boucle qui teste différentes combinaisons de valeurs initiales de coefficients
+for coef_test in range_coef_test:
+    print(f"Coef test : {coef_test}")
+    estimated_coef, estimated_y = FunctionLMS.Lms2(input_signal, a, mu, N, coef_test) # Utilisation de la fonction LMS
+
+    # Affichage de l'évolution des coefficients h0 et h1
+    FunctionLMS.PlotCoefficientsEvolution(estimated_coef[:2, :], h_unknown_coeff[:2], 
+                                          title=f"Évolution des coefficients $h_0$ et $h_1$ du LMS, mu : {mu}, ordre {N}, $h_0$[0] : {coef_test[0]}, $h_1$ : {coef_test[1]}")
 
 plt.show()
