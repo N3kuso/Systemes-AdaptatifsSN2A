@@ -23,18 +23,31 @@ def Lms(x, a, mu, N):
     """
     
     M = len(x) # Longueur du signal
-    h = np.zeros(N) # Initialisation des coefficients du filtre
-    Hm = np.zeros((N,M)) # Matrice contenant l'historique
+    h = np.zeros(N) # Initialisation des coefficients du filtre (vecteur colonne)
+    Hm = np.zeros((N,M-1)) # Matrice contenant l'historique
     Y = np.zeros(M) # Initialisation du vecteur signal de sortie
     
-    for n in range(N, M):
-        xx = x[n-N:n] # Vecteur contenant les N dernieres valeurs de x
+    for n in range(N, M-1):
+        xx = x[n+1:n-N+1:-1] # Vecteur contenant les N dernieres valeurs de x
+        
+        # print(xx)
+        # print(f"xx : {xx.shape}")
 
-        y = np.dot(h.T,xx) # Estimation du y (Produit scalaire)
-        h = h + mu * (a[n] - y) * xx # Correction des coefficients
+        # DEBUG Condition qui vérifie que la dimension de xx ne dépasse pas N
+        if xx.shape[0] != N:
+            raise ValueError(f"Erreur: xx.shape={xx.shape}, attendu={N}")
 
+        Y[n] = np.dot(h.T,xx) # Estimation du y (Produit scalaire)
+        # print(f"y : {Y[n]}")
+
+        error = a[n] - Y[n] # Calcul de l'erreur (Scalaire)
+        # print(f"erreur : {error}")
+
+        h = h + (mu * error * xx) # Correction des coefficients
+        # print(f" h: {h}")
+        
         Hm[:, n] = h # Ajout du coefficient à la matrice historique
-        Y[n] = y # Ajout de y au vecteur Y
+        #Y[n] = y # Ajout de y au vecteur Y
     
     return Hm, Y
 
@@ -75,7 +88,7 @@ def GaussianSignal(n):
         y -> Vecteur signal gaussien
     """
     y = np.random.normal(0, 0.1, n) # Génération du signal Gaussien
-
+    # y = Normalize(y)
     return y
 
 def SinusoidalSignal(f, n, t):
