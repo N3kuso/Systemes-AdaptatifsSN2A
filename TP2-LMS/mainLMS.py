@@ -68,9 +68,7 @@ estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisat
 FunctionLMS.PlotSignal(time, a, title="a[n]")
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
-FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[0,:], title="h0")
-FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[1,:], title="h1")
-FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[2,:], title="h2")
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff)
 
 # for test_mu in [0.01, 0.005, 0.001, 0.0005]:
 #     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
