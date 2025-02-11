@@ -50,30 +50,30 @@ h_unknown_coeff = [1, 0.75, 0.5]
 ########################################################
 # Génération du signal de sortie avec le filtre RIF
 y_tild = np.convolve(input_signal, h_unknown_coeff, mode='same')
-print(y_tild)
-print(len(y_tild))
+# print(y_tild)
+# print(len(y_tild))
 
 # Génération du signal d'observation
 noise_e = 0 # Contexte non-bruité donc bruit e[n] = 0
 a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
-print(a)
+# print(a)
 
 # Identification du filtre RIF grâce au LMS
-mu = 0.01 # Pas d'adaptation du filtre
+mu = 0.001 # Pas d'adaptation du filtre
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
-print(estimated_coef.shape)
+# print(estimated_coef.shape)
 
-FunctionLMS.PlotSignal(time, a[:n], title="a[n]")
+FunctionLMS.PlotSignal(time, a, title="a[n]")
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
-FunctionLMS.PlotSignal(time, estimated_coef[0,:], title="h0")
-FunctionLMS.PlotSignal(time, estimated_coef[1,:], title="h1")
-FunctionLMS.PlotSignal(time, estimated_coef[2,:], title="h2")
+FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[0,:], title="h0")
+FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[1,:], title="h1")
+FunctionLMS.PlotSignal(time[0:n-1], estimated_coef[2,:], title="h2")
 
-for test_mu in [0.01, 0.005, 0.001, 0.0005]:
-    estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
-    print(f"Test avec mu={test_mu}, derniers coefficients:", estimated_coef[:, -1])
+# for test_mu in [0.01, 0.005, 0.001, 0.0005]:
+#     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
+#     print(f"Test avec mu={test_mu}, derniers coefficients:", estimated_coef[:, -1])
     
 plt.show()
