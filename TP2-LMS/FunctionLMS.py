@@ -128,3 +128,28 @@ def PlotSignal(t, s1, title="Signal", xlabel="Temps", ylabel="Amplitude"):
     plt.legend()
     plt.grid()
     #plt.show()
+
+def PlotCoefficientsEvolution(Hm, h_theorique, title="Évolution des coefficients LMS"):
+    """
+    Fonction qui affiche l'évolution des coefficients estimés par LMS comparé avec les valeurs théoriques à obtenir.
+
+    INPUT :
+        Hm          -> Matrice contenant l'historique des coefficients estimés
+        h_theorique -> Vecteur contenant les valeurs théoriques des coefficients
+        title       -> Titre du graphique
+    """
+    
+    N, M = Hm.shape  # Nombre de coefficients
+
+    plt.figure(figsize=(10, 6))  # Taille de la figure
+    
+    for i in range(N):
+        plt.plot(Hm[i, :], label=f"$h_{i}$ estimé", linestyle="-") # Evolution du coefficient
+        plt.axhline(h_theorique[i], color="k", linestyle="--", label=f"$h_{i}$ théorique")  # Ligne horizontale
+
+    plt.title(title)
+    plt.xlabel("Itérations")
+    plt.ylabel("Valeur des coefficients")
+    plt.legend()
+    plt.grid()
+    # plt.show()
