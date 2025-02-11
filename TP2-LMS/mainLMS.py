@@ -90,5 +90,5 @@ for test_mu in [0.01, 0.005, 0.001, 0.0005]:
     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
     # Affichage de l'évolution des coefficients
     FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {test_mu}, ordre {N}")
-    
+
 plt.show()
