@@ -25,19 +25,22 @@ while not valid_choice:
         ## Génération du signal Binaire ##
         input_signal = FunctionLMS.BinarySignal(n)
         # Affichage
-        FunctionLMS.PlotSignal(time, input_signal, title="Signal Binaire")
+        input_signal_name = "Binaire"
+        FunctionLMS.PlotSignal(time, input_signal, title=f"Signal {input_signal_name}")
         valid_choice = True
     elif choice_signal == "2":
         ## Génération du signal Gaussien
         input_signal = FunctionLMS.GaussianSignal(n)
         # Affichage
-        FunctionLMS.PlotSignal(time, input_signal, title="Signal Gaussien") 
+        input_signal_name = "Gaussien"
+        FunctionLMS.PlotSignal(time, input_signal, title=f"Signal {input_signal_name}") 
         valid_choice = True
     elif choice_signal == "3":
         ## Génération du signal Sinusoidal ##
         input_signal = FunctionLMS.SinusoidalSignal(f, n, time)
         # Affichage
-        FunctionLMS.PlotSignal(time, input_signal, title="Signal Sinusoïdal")
+        input_signal_name = "Sinusoidal"
+        FunctionLMS.PlotSignal(time, input_signal, title=f"Signal {input_signal_name}")
         valid_choice = True
     else:
         print("Choix invalide. Veuillez entrer 1, 2 ou 3.")
@@ -57,6 +60,9 @@ a = y_tild + noise_e # Signal d'observation, ici égal à y_tild
 
 # Identification du filtre RIF grâce au LMS
 mu = 0.001 # Pas d'adaptation du filtre
+# Cas spécial pour signal Gaussien car très faible
+if choice_signal == "2":
+    mu = 0.1
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
@@ -67,7 +73,7 @@ FunctionLMS.PlotSignal(time, a, title="a[n]")
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
 # Affichage de l'évolution des coefficients
-FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"{input_signal_name} - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
 ### Surestimation du nombre de coefficients de la fonction LMS ###
 h_unknown_coeff = [1, 0.75, 0.5, 0, 0] # Ajout de 0 fictif pour compatibilité avec la fonction PlotCoefficientsEvolution
@@ -76,13 +82,13 @@ N = 4
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 print(estimated_coef.shape)
 # Affichage de l'évolution des coefficients
-FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"{input_signal_name} - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
 ## Ordre 5
 N = 5
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 # Affichage de l'évolution des coefficients
-FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"{input_signal_name} - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
 ### Visualisation avec différentes valeurs de pas d'adaptation
 N = 3 # Ordre parfait du filtre RIF
@@ -90,7 +96,7 @@ h_unknown_coeff = [1, 0.75, 0.5] # Retour au bon nombre de coeff pour le RIF
 for test_mu in [0.01, 0.005, 0.001, 0.0005]:
     estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, test_mu, N)
     # Affichage de l'évolution des coefficients
-    FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Évolution des coefficients LMS, mu : {test_mu}, ordre {N}")
+    FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"{input_signal_name} - Évolution des coefficients LMS, mu : {test_mu}, ordre {N}")
 
 ########################################################
 # Si2 : Visualisation de la convergence du LMS avec 
@@ -106,6 +112,9 @@ range_coef_test = np.array([
 
 # Paramètres du LMS
 mu = 0.001 # Pas d'adaptation du filtre
+# Cas spécial pour signal Gaussien car très faible
+if choice_signal == "2":
+    mu = 0.1
 N = 3 # Nombre coefficient du filtre
 
 # Boucle qui teste différentes combinaisons de valeurs initiales de coefficients
@@ -115,7 +124,7 @@ for coef_test in range_coef_test:
 
     # Affichage de l'évolution des coefficients h0 et h1
     FunctionLMS.PlotCoefficientsEvolution(estimated_coef[:2, :], h_unknown_coeff[:2], 
-                                          title=f"Évolution des coefficients $h_0$ et $h_1$ du LMS, mu : {mu}, ordre {N}, $h_0$[0] : {coef_test[0]}, $h_1$ : {coef_test[1]}")
+                                          title=f"{input_signal_name} - Évolution des coefficients $h_0$ et $h_1$ du LMS, mu : {mu}, ordre {N}, $h_0$[0] : {coef_test[0]}, $h_1$[0] : {coef_test[1]}")
 
 
 
@@ -137,6 +146,9 @@ a = y_tild + noise_e # Construction du signal d'observation : y_tild + noise_e
 
 # Identification du filtre RIF grâce au LMS
 mu = 0.01 # Pas d'adaptation du filtre
+# Cas spécial pour signal Gaussien car très faible
+if choice_signal == "2":
+    mu = 0.1
 N = 3 # Nombre coefficient du filtre
 estimated_coef, estimated_y = FunctionLMS.Lms(input_signal, a, mu, N) # Utilisation de la fonction LMS
 
@@ -147,6 +159,6 @@ FunctionLMS.PlotSignal(time, a, title="a[n] bruité")
 FunctionLMS.PlotSignal(time, estimated_y, title="y[n]")
 
 # Affichage de l'évolution des coefficients
-FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"Contexte bruité - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
+FunctionLMS.PlotCoefficientsEvolution(estimated_coef, h_unknown_coeff, title=f"{input_signal_name} - Contexte bruité - Évolution des coefficients LMS, mu : {mu}, ordre {N}")
 
 plt.show()
